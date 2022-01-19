@@ -39,14 +39,49 @@ Airplane.prototype.land = function () {
         + It should return a string with `name` and `age`. Example: "Mary, 50"
 */
 
-function Person() {
-  
+function Person(name, age) {
+  this.name = name;
+  this.age = age;
+  this.stomach = [];
 }
 
+Person.prototype.eat = function(edible) {
+  if(this.stomach.length < 10) {
+    this.stomach.push(edible);
+  }
+}
 
+Person.prototype.poop = function() {
+  this.stomach = [];
+}
 
+Person.prototype.toString = function() {
+  return `${this.name}, ${this.age}`;
+}
 
+//create new people
 
+const sallie = new Person('Sallie', 26);
+const mark = new Person('Mark', 23);
+const cori = new Person('Cori', 25);
+
+console.log(sallie.toString());
+console.log(mark.toString());
+console.log(cori.toString());
+
+mark.eat('Pizza');
+mark.eat('Pasta');
+mark.eat('Tacos');
+mark.eat('Sushi');
+mark.eat('Sandwich');
+mark.eat('Cake');
+mark.eat('Ramen Noodles');
+
+console.log(mark.stomach);
+
+mark.poop();
+
+console.log(mark.stomach);
 
 
 /*
@@ -63,9 +98,35 @@ function Person() {
         + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
 */
 
-function Car() {
-  
+function Car(model, milesPerGallon) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
 }
+
+Car.prototype.fill = function(gallons) {
+  this.tank += gallons;
+  return this.tank;
+}
+
+Car.prototype.drive = function(distance) {
+  this.odometer += distance;
+  this.tank = ((this.tank * this.milesPerGallon) - distance) / (this.milesPerGallon);
+  console.log(this.odometer);
+  console.log(this.tank);
+  if(this.tank <= 0) {
+    console.log(`I ran out of fuel at ${this.odometer} miles!`);
+  }
+
+}
+
+const tesla = new Car('Model S', 20);
+console.log(tesla);
+console.log(tesla.fill(20));
+console.log(tesla);
+tesla.drive(400);
+console.log(tesla);
 
 
 /*
@@ -83,10 +144,10 @@ function Baby() {
 /* 
   TASK 4
   In your own words explain the four principles for the "this" keyword below:
-  1. 
-  2. 
-  3. 
-  4. 
+  1. Window Binding - 
+  2. Implicit Binding - 
+  3. Explicit Binding - 
+  4. New Binding - 
 */
 
 
