@@ -111,21 +111,22 @@ Car.prototype.fill = function(gallons) {
 }
 
 Car.prototype.drive = function(distance) {
-  this.odometer += distance;
-  this.tank = ((this.tank * this.milesPerGallon) - distance) / (this.milesPerGallon);
-  console.log(this.odometer);
-  console.log(this.tank);
-  if(this.tank <= 0) {
-    console.log(`I ran out of fuel at ${this.odometer} miles!`);
+  const driveableMiles = this.tank * this.milesPerGallon;
+  if(distance <= driveableMiles) {
+    this.odometer += distance;
+    this.tank = (driveableMiles - distance) / this.milesPerGallon;
+  } else {
+    this.odometer += driveableMiles;
+    this.tank = 0;
+    return `I ran out of fuel at ${this.odometer} miles!`;
   }
-
 }
 
 const tesla = new Car('Model S', 20);
 console.log(tesla);
 console.log(tesla.fill(20));
 console.log(tesla);
-tesla.drive(400);
+console.log(tesla.drive(500));
 console.log(tesla);
 
 
@@ -136,18 +137,49 @@ console.log(tesla);
     - Besides the methods on Person.prototype, babies have the ability to `.play()`:
         + Should return a string "Playing with x", x being the favorite toy.
 */
-function Baby() {
- 
+
+
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age);
+  this.favoriteToy = favoriteToy;
 }
+
+Baby.prototype = Object.create(Person.prototype);
+
+Baby.prototype.play = function() {
+  return `Playing with ${this.favoriteToy}`;
+}
+
+const bubs = new Baby('Bubs', 1, 'Nookie');
+console.log(bubs);
+console.log(bubs.play());
+console.log(bubs.toString());
+bubs.eat('🍭');
+bubs.eat('🍕');
+bubs.eat('🌭');
+console.log(bubs.stomach);
+bubs.eat('🍪');
+bubs.eat('🥞');
+bubs.eat('🍿');
+bubs.eat('🍓');
+bubs.eat('🍫');
+bubs.eat('🥓');
+console.log(bubs.stomach);
+bubs.eat('🍌');
+console.log(bubs.stomach);
+bubs.eat('🧀');
+console.log(bubs.stomach);
 
 
 /* 
   TASK 4
   In your own words explain the four principles for the "this" keyword below:
-  1. Window Binding - 
-  2. Implicit Binding - 
-  3. Explicit Binding - 
-  4. New Binding - 
+  1. Window Binding - 'this' will return the window object if used in global scope.
+  2. Implicit Binding - applies to objects with methods, when the function is invoked look to the left of the dot and that is what 'this' refers to.
+  3. Explicit Binding - .call(): will immediately invoke the function, we pass the this keyword and then the arguments 1 by 1
+                        .apply(): will immediately invoke the function, we pass the this keyword and then the arguments as an array
+                        .bind(): we pass in the arguments 1 by 1, it does not invoke the function, instead it returns a brand new function that can be invoked later
+  4. New Binding - applies to constructor functions, initialized using arguments
 */
 
 
